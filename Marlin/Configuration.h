@@ -750,7 +750,32 @@
 
 // default settings
 
-#define DEFAULT_AXIS_STEPS_PER_UNIT   {80,266,800,100}  // default steps per unit for Ultimaker
+//#define DEFAULT_AXIS_STEPS_PER_UNIT   {80,266,800,100}  // default steps per unit for Ultimaker
+#define NEMA17_FULL_STEPS 200.0
+#define NEMA17_MICROSTEPS 16.0
+#define NEMA17_MOTOR_STEPS (NEMA17_FULL_STEPS * NEMA17_MICROSTEPS)
+
+#define X_PULLEY_PITCH 2.0
+#define X_PULLEY_TEETH 20.0
+#define Y_ROD_PITCH 12
+#define Z_ROD_PITCH  4 // i.e. Lead of the twist
+#define HOBBED_BOLT_DIAM 10.56
+
+#define HOBBED_BOLD_CIRC (M_PI * HOBBED_BOLT_DIAM)
+
+#define X_STEPS (NEMA17_MOTOR_STEPS / (X_PULLEY_PITCH * X_PULLEY_TEETH))
+#define Y_STEPS (NEMA17_MOTOR_STEPS / Y_ROD_PITCH)
+#define Z_STEPS (NEMA17_MOTOR_STEPS / Z_ROD_PITCH)
+#define E_STEPS (NEMA17_MOTOR_STEPS / HOBBED_BOLD_CIRC)
+
+//#define DEFAULT_AXIS_STEPS_PER_UNIT   { X_STEPS, Y_STEPS, Z_STEPS, E_STEPS}
+// Compensation feedback here, but will be overriden by the EEPROM setting, so disable these for now
+#define X_STEPS_COMP 1
+#define Y_STEPS_COMP double(50/50.35)
+#define Z_STEPS_COMP 1
+#define E_STEPS_COMP 1
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { X_STEPS * X_STEPS_COMP, Y_STEPS * Y_STEPS_COMP, Z_STEPS * Z_STEPS_COMP, E_STEPS * E_STEPS_COMP }
+
 #define DEFAULT_MAX_FEEDRATE          {300, 300, 5, 25}    // (mm/sec)
 #define DEFAULT_MAX_ACCELERATION      {1000,1000,100,10000}    // X, Y, Z, E maximum start speed for accelerated moves. E default values are good for Skeinforge 40+, for older versions raise them a lot.
 
