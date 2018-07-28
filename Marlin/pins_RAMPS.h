@@ -157,9 +157,9 @@
   #define HEATER_1_PIN   RAMPS_D9_PIN
   #define HEATER_BED_PIN RAMPS_D8_PIN
 #elif ENABLED(IS_RAMPS_EFF)                    // Hotend, Fan, Fan
-  #define FAN_PIN        RAMPS_D9_PIN
+  #define FAN_PIN        -1//RAMPS_D9_PIN
   #define FAN1_PIN       RAMPS_D8_PIN
-  #define CONTROLLERFAN_PIN  -1
+//  #define CONTROLLER_FAN_PIN  -1
 #elif ENABLED(IS_RAMPS_SF)                     // Spindle, Fan
   #define FAN_PIN        RAMPS_D8_PIN
 #else                                          // Non-specific are "EFB" (i.e., "EFBF" or "EFBE")

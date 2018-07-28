@@ -121,16 +121,16 @@
 // The following define selects which electronics board you have.
 // Please choose the name from boards.h that matches your setup
 #ifndef MOTHERBOARD
-  #define MOTHERBOARD BOARD_RAMPS_14_EFB
+  #define MOTHERBOARD BOARD_RAMPS_14_EFF
 #endif
 
 // Optional custom name for your RepStrap or other custom machine
 // Displayed in the LCD "Ready" message
-#define CUSTOM_MACHINE_NAME "ATOM_Proton.01"
+#define CUSTOM_MACHINE_NAME "ATOM Proton"
 
 // Define this to set a unique identifier for this printer, (Used by some programs to differentiate between machines)
 // You can use an online service to generate a random UUID. (eg http://www.uuidgenerator.net/version4)
-//#define MACHINE_UUID "00000000-0000-0000-0000-000000000000"
+#define MACHINE_UUID "7e76421b-df59-4e68-8c77-13eb567fae88"
 
 // This defines the number of extruders
 // :[1,2,3,4]
@@ -285,10 +285,15 @@
   #define K1 0.95 //smoothing factor within the PID
 
   // If you are using a pre-configured hotend then you can use one of the value sets by uncommenting it
+  // ATOM Proton
+  #define  DEFAULT_Kp 9.11
+  #define  DEFAULT_Ki 0.60
+  #define  DEFAULT_Kd 34.45
+
   // Ultimaker
-  #define  DEFAULT_Kp 22.2
-  #define  DEFAULT_Ki 1.08
-  #define  DEFAULT_Kd 114
+  //#define  DEFAULT_Kp 22.2
+  //#define  DEFAULT_Ki 1.08
+  //#define  DEFAULT_Kd 114
 
   // MakerGear
   //#define  DEFAULT_Kp 7.0
@@ -476,8 +481,8 @@
 //    |           |
 //    O-- FRONT --+
 //  (0,0)
-#define X_PROBE_OFFSET_FROM_EXTRUDER  0  // ??  X offset: -left  +right  [of the nozzle]
-#define Y_PROBE_OFFSET_FROM_EXTRUDER  0  // ??  Y offset: -front +behind [the nozzle]
+#define X_PROBE_OFFSET_FROM_EXTRUDER  -32  // ??  X offset: -left  +right  [of the nozzle]
+#define Y_PROBE_OFFSET_FROM_EXTRUDER  -21  // ??  Y offset: -front +behind [the nozzle]
 #define Z_PROBE_OFFSET_FROM_EXTRUDER  0 //??test   // Z offset: -below +above  [the nozzle]
 
 // X and Y axis travel speed (mm/m) between probes
@@ -575,14 +580,14 @@
 // @section machine
 
 // Invert the stepper direction. Change (or reverse the motor connector) if an axis goes the wrong way.
-#define INVERT_X_DIR true
-#define INVERT_Y_DIR false
-#define INVERT_Z_DIR true
+#define INVERT_X_DIR false
+#define INVERT_Y_DIR true
+#define INVERT_Z_DIR false
 
 // @section extruder
 
 // For direct drive extruder v9 set to true, for geared extruder set to false.
-#define INVERT_E0_DIR false
+#define INVERT_E0_DIR true
 #define INVERT_E1_DIR false
 #define INVERT_E2_DIR false
 #define INVERT_E3_DIR false
@@ -608,8 +613,8 @@
 #define X_MIN_POS 0
 #define Y_MIN_POS 0
 #define Z_MIN_POS 0
-#define X_MAX_POS 170
-#define Y_MAX_POS 160
+#define X_MAX_POS 160
+#define Y_MAX_POS 150
 #define Z_MAX_POS 130
 
 //===========================================================================
@@ -680,11 +685,11 @@
 
   #if ENABLED(AUTO_BED_LEVELING_GRID)
 
-    #define LEFT_PROBE_BED_POSITION 30 //X
-    #define RIGHT_PROBE_BED_POSITION 140
-    #define FRONT_PROBE_BED_POSITION 30 //Y
-    #define BACK_PROBE_BED_POSITION 130
-
+    #define LEFT_PROBE_BED_POSITION 30
+    #define RIGHT_PROBE_BED_POSITION 120
+    #define FRONT_PROBE_BED_POSITION 30
+    #define BACK_PROBE_BED_POSITION 120
+    
     #define MIN_PROBE_EDGE 10 // The Z probe minimum square sides can be no smaller than this.
 
     // Set the number of grid points per dimension.
@@ -750,7 +755,32 @@
 
 // default settings
 
-#define DEFAULT_AXIS_STEPS_PER_UNIT   {80,266,800,100}  // default steps per unit for Ultimaker
+//#define DEFAULT_AXIS_STEPS_PER_UNIT   {80,266,800,100}  // default steps per unit for Ultimaker
+#define NEMA17_FULL_STEPS 200.0
+#define NEMA17_MICROSTEPS 16.0
+#define NEMA17_MOTOR_STEPS (NEMA17_FULL_STEPS * NEMA17_MICROSTEPS)
+
+#define X_PULLEY_PITCH 2.0
+#define X_PULLEY_TEETH 20.0
+#define Y_ROD_PITCH 12
+#define Z_ROD_PITCH  4 // i.e. Lead of the twist
+#define HOBBED_BOLT_DIAM 10.56
+
+#define HOBBED_BOLD_CIRC (M_PI * HOBBED_BOLT_DIAM)
+
+#define X_STEPS (NEMA17_MOTOR_STEPS / (X_PULLEY_PITCH * X_PULLEY_TEETH))
+#define Y_STEPS (NEMA17_MOTOR_STEPS / Y_ROD_PITCH)
+#define Z_STEPS (NEMA17_MOTOR_STEPS / Z_ROD_PITCH)
+#define E_STEPS (NEMA17_MOTOR_STEPS / HOBBED_BOLD_CIRC)
+
+//#define DEFAULT_AXIS_STEPS_PER_UNIT   { X_STEPS, Y_STEPS, Z_STEPS, E_STEPS}
+// Compensation feedback here, but will be overriden by the EEPROM setting, so disable these for now
+#define X_STEPS_COMP 1
+#define Y_STEPS_COMP double(50/50.35)
+#define Z_STEPS_COMP 1
+#define E_STEPS_COMP 1
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { X_STEPS * X_STEPS_COMP, Y_STEPS * Y_STEPS_COMP, Z_STEPS * Z_STEPS_COMP, E_STEPS * E_STEPS_COMP }
+
 #define DEFAULT_MAX_FEEDRATE          {300, 300, 5, 25}    // (mm/sec)
 #define DEFAULT_MAX_ACCELERATION      {1000,1000,100,10000}    // X, Y, Z, E maximum start speed for accelerated moves. E default values are good for Skeinforge 40+, for older versions raise them a lot.
 
@@ -812,9 +842,9 @@
 // @section temperature
 
 // Preheat Constants
-#define PREHEAT_1_TEMP_HOTEND 200
-#define PREHEAT_1_TEMP_BED     70
-#define PREHEAT_1_FAN_SPEED     0 // Value from 0 to 255
+#define PREHEAT_1_TEMP_HOTEND 210
+#define PREHEAT_1_TEMP_BED    0
+#define PREHEAT_1_FAN_SPEED   0 // Value from 0 to 255
 
 #define PREHEAT_2_TEMP_HOTEND 240
 #define PREHEAT_2_TEMP_BED    110
