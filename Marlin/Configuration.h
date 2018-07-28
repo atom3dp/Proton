@@ -608,8 +608,8 @@
 #define X_MIN_POS 0
 #define Y_MIN_POS 0
 #define Z_MIN_POS 0
-#define X_MAX_POS 170
-#define Y_MAX_POS 160
+#define X_MAX_POS 160
+#define Y_MAX_POS 150
 #define Z_MAX_POS 130
 
 //===========================================================================
@@ -680,11 +680,11 @@
 
   #if ENABLED(AUTO_BED_LEVELING_GRID)
 
-    #define LEFT_PROBE_BED_POSITION 30 //X
-    #define RIGHT_PROBE_BED_POSITION 140
-    #define FRONT_PROBE_BED_POSITION 30 //Y
-    #define BACK_PROBE_BED_POSITION 130
-
+    #define LEFT_PROBE_BED_POSITION 30
+    #define RIGHT_PROBE_BED_POSITION 120
+    #define FRONT_PROBE_BED_POSITION 30
+    #define BACK_PROBE_BED_POSITION 120
+    
     #define MIN_PROBE_EDGE 10 // The Z probe minimum square sides can be no smaller than this.
 
     // Set the number of grid points per dimension.
